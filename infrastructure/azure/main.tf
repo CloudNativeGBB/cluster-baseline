@@ -27,52 +27,17 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   retention_in_days   = 30
 }
 
-resource "azuread_application" "application_aks_cluster" {
-  name = "${var.prefix}-aks-cluster"
-  type = "native"
-}
-
-resource "azuread_service_principal" "service_principal_aks_cluster" {
-  application_id = azuread_application.application_aks_cluster.application_id
-  # The following tag is required to make the service principal visible under enterprise applications in the portal
-  tags = ["WindowsAzureActiveDirectoryIntegratedApp"]
-}
-
-resource "random_password" "random_password_application_aks_cluster" {
-  length = 16
-  special = true
-
-  keepers = {
-    azuread_application = azuread_application.application_aks_cluster.application_id
-  }
-}
-
-resource "azuread_application_password" "application_password_aks_cluster" {
-  application_object_id = azuread_application.application_aks_cluster.id
-  value = random_password.random_password_application_aks_cluster.result
-
-  end_date = timeadd(timestamp(), "87600h")
-
-  lifecycle {
-    ignore_changes = [
-      end_date
-    ]
-  }
-}
-
 resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   name                = "${var.prefix}-aks-cluster"
   location            = var.region
-  resource_group_name = azurerm_resource_group.resource_group.names
+  resource_group_name = azurerm_resource_group.resource_group.name
   dns_prefix          = "${var.prefix}-aks-cluster"
 
-  agent_pool_profile {
+  default_node_pool {
     name                = "default"
-    count               = 3
     min_count           = 3
     max_count           = 10
     vm_size             = "Standard_DS1_v2"
-    os_type             = "Linux"
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
     availability_zones  = [ "1", "2", "3"]
@@ -81,8 +46,8 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   }
 
   service_principal {
-    client_id     = azuread_application.application_aks_cluster.application_id
-    client_secret = random_password.random_password_application_aks_cluster.result
+    client_id     = var.service_principal_client_id
+    client_secret = var.service_principal_client_secret
   }
 
   network_profile {
@@ -103,28 +68,9 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
       enabled = false
     }
   }
-
+  
   role_based_access_control {
     enabled = true
   }
 
-  depends_on = [
-    azuread_application_password.application_password_aks_cluster.this
-  ]
-
-}
-
-resource "null_resource" "before" {
-  depends_on = [
-    azuread_application_password.application_password_aks_cluster.this
-  ]
-}
-
-resource "null_resource" "delay" {
-  provisioner "local-exec" {
-    command = "echo \"zzz\" && sleep 30"
-  }
-  triggers = {
-    "before" = "${null_resource.before.id}"
-  }
 }
