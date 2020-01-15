@@ -1,2 +1,9 @@
 # macOS
 .DS_Store
+
+# Terraform
+.terraform
+terraform.tfstate
+
+# Secrets
+export_secrets.sh
