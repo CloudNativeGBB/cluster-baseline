@@ -23,6 +23,10 @@ variable "service_principal_client_secret" {
   type = string
 }
 
+variable "kubernetes_version" {
+  type = string
+}
+
 variable "network_plugin" {
   default = "azure"
   type = string
