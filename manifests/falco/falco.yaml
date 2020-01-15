@@ -3341,7 +3341,7 @@ roleRef:
 
 ---
 # Source: falco/templates/daemonset.yaml
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: sysdig-falco
@@ -3352,9 +3352,6 @@ metadata:
     release: "sysdig-falco"
     heritage: "Tiller"
 spec:
-  selector:
-    matchLabels:
-      app: sysdig-falco
   template:
     metadata:
       name: sysdig-falco
