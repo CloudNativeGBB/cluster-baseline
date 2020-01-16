@@ -1,0 +1,111 @@
+---
+# Source: azuremonitor-containers/templates/omsagent-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: omsagent-rs
+ namespace: kube-system
+ labels:
+   chart: azuremonitor-containers-2.5.0
+   release: omsagent
+   heritage: Helm
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   rsName: "omsagent-rs"
+ strategy:
+  type: RollingUpdate
+ template:
+  metadata:
+   labels:
+    rsName: "omsagent-rs"
+   annotations:
+    agentVersion: ciprod11012019
+    dockerProviderVersion: 7.0.0-6
+    schema-versions: "v1"
+  spec:
+   serviceAccountName: omsagent
+   containers:
+     - name: omsagent
+       image: "mcr.microsoft.com/azuremonitor/containerinsights/ciprod:ciprod11012019"
+       imagePullPolicy: IfNotPresent
+       resources:
+         limits:
+           cpu: 150m
+           memory: 500Mi
+         requests:
+           cpu: 110m
+           memory: 250Mi
+       env:
+       - name: ACS_RESOURCE_NAME
+         value: "DemoLocalCluster"
+       - name: CONTROLLER_TYPE
+         value: "ReplicaSet"
+       - name: NODE_IP
+         valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+       securityContext:
+         privileged: true
+       ports:
+       - containerPort: 25225
+         protocol: TCP
+       - containerPort: 25224
+         protocol: UDP
+       - containerPort: 25227
+         protocol: TCP
+         name: in-rs-tcp
+       volumeMounts:
+        - mountPath: /var/run/host
+          name: docker-sock
+        - mountPath: /var/log
+          name: host-log
+        - mountPath: /var/lib/docker/containers
+          name: containerlog-path
+        - mountPath: /etc/kubernetes/host
+          name: azure-json-path
+        - mountPath: /etc/omsagent-secret
+          name: omsagent-secret
+          readOnly: true
+        - mountPath : /etc/config
+          name: omsagent-rs-config
+        - mountPath: /etc/config/settings
+          name: settings-vol-config
+          readOnly: true
+       livenessProbe:
+        exec:
+         command:
+         - /bin/bash
+         - -c
+         - "/opt/livenessprobe.sh"
+        initialDelaySeconds: 60
+        periodSeconds: 60
+   nodeSelector:
+    beta.kubernetes.io/os: linux
+   volumes:
+    - name: docker-sock
+      hostPath:
+       path: /var/run
+    - name: container-hostname
+      hostPath:
+       path: /etc/hostname
+    - name: host-log
+      hostPath:
+       path: /var/log
+    - name: containerlog-path
+      hostPath:
+       path: /var/lib/docker/containers
+    - name: azure-json-path
+      hostPath:
+       path: /etc/kubernetes
+    - name: omsagent-secret
+      secret:
+       secretName: omsagent-secret
+    - name: omsagent-rs-config
+      configMap:
+        name: omsagent-rs-config
+    - name: settings-vol-config
+      configMap:
+        name: container-azm-ms-agentconfig
+        optional: true
