@@ -1,0 +1,19 @@
+#! /bin/bash
+
+export TF_PLAN_NAME="tfplan"
+export TF_VARS_FILE_NAME="test"
+export GOOGLE_CLOUD_KEYFILE_JSON="./gcloud-key.json"
+
+terraform init \
+    -var-file="$TF_VARS_FILE_NAME.tfvars" \
+    -input=false
+
+terraform plan \
+    -var-file="$TF_VARS_FILE_NAME.tfvars" \
+    -out="$TF_PLAN_NAME" \
+    -input=false
+
+terraform apply \
+    -auto-approve \
+    -input=false \
+    $TF_PLAN_NAME
