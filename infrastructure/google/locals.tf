@@ -6,4 +6,6 @@ locals {
   subnetwork      = var.SUBNET_NAME
   ip_range_pods   = var.POD_SUBNET_NAME
   ip_range_services = var.SERVICE_SUBNET_NAME
+
+  kubernetes_version = var.KUBERNETES_VERSION
 }

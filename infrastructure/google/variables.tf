@@ -25,3 +25,7 @@ variable "POD_SUBNET_NAME" {
 variable "SERVICE_SUBNET_NAME" {
   
 }
+
+variable "KUBERNETES_VERSION" {
+  
+}

@@ -12,6 +12,8 @@ module "gke" {
   horizontal_pod_autoscaling = true
   network_policy             = true
 
+  kubernetes_version         = local.kubernetes_version
+
   node_pools = [
     {
       name               = "default-node-pool"
