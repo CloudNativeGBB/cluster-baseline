@@ -1,0 +1,17 @@
+TF_PLAN_NAME="tfplan"
+TF_VARS_FILE_NAME="test"
+
+terraform init \
+    -var-file="$TF_VARS_FILE_NAME.tfvars" \
+    -input=false
+
+terraform plan \
+    -var-file="$TF_VARS_FILE_NAME.tfvars" \
+    -out $TF_PLAN_NAME \
+    -input=false \
+    -auto-approve
+
+terraform apply \
+    -input=false \
+    -auto-approve \
+    $TF_PLAN_NAME
