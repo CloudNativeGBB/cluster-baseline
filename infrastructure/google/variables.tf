@@ -1,18 +1,27 @@
-variable "PREFIX" {
+variable "PROJECT_ID" {
   
 }
-
-variable "LOCATION" {
-}
-
-variable "MACHINE_TYPE" {
-}
-
 
 variable "CLUSTER_NAME" {
   
 }
 
-variable "NODE_COUNT" {
+variable "REGION" {
+  
+}
+
+variable "VPC_NAME" {
+  
+}
+
+variable "SUBNET_NAME" {
+  
+}
+
+variable "POD_SUBNET_NAME" {
+  
+}
+
+variable "SERVICE_SUBNET_NAME" {
   
 }
