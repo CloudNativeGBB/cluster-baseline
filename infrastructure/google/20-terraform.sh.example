@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export TF_PLAN_NAME="tfplan"
+export TF_PLAN_NAME="./tfplan"
 export TF_VARS_FILE_NAME="test"
 export GOOGLE_CLOUD_KEYFILE_JSON="./gcloud-key.json"
 
