@@ -1,0 +1,8 @@
+PROJECT_ID              =""
+CLUSTER_NAME            =""
+REGION                  =""
+VPC_NAME                =""
+SUBNET_NAME             =""
+POD_SUBNET_NAME         =""
+SERVICE_SUBNET_NAME     =""
+KUBERNETES_VERSION      =""

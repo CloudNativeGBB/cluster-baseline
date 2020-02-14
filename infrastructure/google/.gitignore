@@ -1,0 +1,5 @@
+test.tfvars
+test.sh
+gcloud-key.json
+*.tfstate*
+tfplan
