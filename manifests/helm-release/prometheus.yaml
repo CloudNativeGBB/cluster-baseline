@@ -1,0 +1,17 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus-operator
+  namespace: monitoring
+spec:
+  releaseName: prometheus-operator
+  targetNamespace: monitoring
+  timeout: 300
+  resetValues: false
+  wait: false
+  forceUpgrade: false
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    name: stable/prometheus-operator
+  values:
+    replicas: 1
