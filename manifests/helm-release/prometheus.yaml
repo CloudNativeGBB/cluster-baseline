@@ -12,6 +12,6 @@ spec:
   forceUpgrade: false
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
-    name: stable/prometheus-operator
+    name: prometheus-operator
   values:
     replicas: 1
