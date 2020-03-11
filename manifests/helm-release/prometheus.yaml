@@ -13,5 +13,3 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: prometheus-operator
-  values:
-    replicas: 1

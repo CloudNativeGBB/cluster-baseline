@@ -13,5 +13,3 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: kured
-  values:
-    replicas: 1
