@@ -11,7 +11,7 @@ spec:
   wait: false
   forceUpgrade: false
   chart:
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    repository: https://charts.bitnami.com/bitnami
     name: prometheus-operator
     version: 3.3.6
   values:
