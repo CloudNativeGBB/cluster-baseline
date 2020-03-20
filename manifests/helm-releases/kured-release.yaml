@@ -1,10 +1,10 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: rabbit
+  name: prom
   namespace: default
 spec:
-  releaseName: rabbitmq
+  releaseName: prometheus-operator
   targetNamespace: kured
   timeout: 300
   resetValues: false
@@ -12,7 +12,7 @@ spec:
   forceUpgrade: false
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
-    name: rabbitmq
+    name: prometheus-operator
     version: 3.3.6
   values:
     replicas: 1
