@@ -13,6 +13,5 @@ spec:
   chart:
     repository: https://charts.bitnami.com/bitnami
     name: prometheus-operator
-    version: 3.3.6
   values:
     replicas: 1
