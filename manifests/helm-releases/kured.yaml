@@ -1,18 +1,15 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: rabbit
-  namespace: default
+  name: kured
+  namespace: kured
 spec:
-  releaseName: rabbitmq
-  targetNamespace: default
+  releaseName: kured
+  targetNamespace: kured
   timeout: 300
   resetValues: false
   wait: false
   forceUpgrade: false
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
-    name: rabbitmq
-    version: 3.3.6
-  values:
-    replicas: 1
+    name: kured
