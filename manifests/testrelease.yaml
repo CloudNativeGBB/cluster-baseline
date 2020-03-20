@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   releaseName: rabbitmq
-  targetNamespace: mq
+  targetNamespace: default
   timeout: 300
   resetValues: false
   wait: false
