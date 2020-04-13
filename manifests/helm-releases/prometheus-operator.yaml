@@ -1,17 +1,16 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: prom
-  namespace: default
+  name: prometheus-operator
+  namespace: monitoring
 spec:
   releaseName: prometheus-operator
-  targetNamespace: kured
+  targetNamespace: monitoring
   timeout: 300
   resetValues: false
   wait: false
   forceUpgrade: false
   chart:
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://kubernetes-charts.storage.googleapis.com
     name: prometheus-operator
-  values:
-    replicas: 1
+    version: 8.12.3
