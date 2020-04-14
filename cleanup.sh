@@ -1,9 +1,18 @@
-az k8sconfiguration delete -g EphArcTest \
--c griffarctest \
--n cluster-baseline 
+#!/bin/bash
 
+RG=<Insert Arc Cluster Resource Group>
+CLUSTER=<Insert Arc Cluster Name>
+CONFIG=<Insert Config Name>
+
+# Delete the configuration
+az k8sconfiguration delete -g $RG \
+-c $CLUSTER \
+-n $CONFIG 
+
+# Delete the namespaces
 kubectl delete ns monitoring falco
 
+# Additional prometheus cleanup - temporary pending fixes
 kubectl delete psp \
 prometheus-operator-alertmanager \
 prometheus-operator-grafana \
