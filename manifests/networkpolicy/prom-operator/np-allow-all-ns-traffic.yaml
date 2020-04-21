@@ -1,4 +1,4 @@
-apiVersion: crd.projectcalico.org/v1
+apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: prom-operator-network-policy
@@ -8,9 +8,3 @@ spec:
   policyTypes:
   - Ingress
   - Egress
-  ingress:
-  - action: Allow
-    protocol: TCP
-  egress:
-  - action: Allow
-    protocol: TCP
