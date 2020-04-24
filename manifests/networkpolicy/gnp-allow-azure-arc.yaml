@@ -1,0 +1,20 @@
+apiVersion: crd.projectcalico.org/v1
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-azure-arc
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: azure-arc
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: azure-arc
