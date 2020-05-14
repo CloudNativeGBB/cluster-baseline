@@ -1,0 +1,16 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: helmtest
+  namespace: default
+spec:
+  releaseName: helmtest
+  targetNamespace: default
+  timeout: 300
+  resetValues: false
+  wait: false
+  forceUpgrade: false
+  chart:
+    repository: https://griffith.azurecr.io
+    name: helm/hello-world
+    version: v1
