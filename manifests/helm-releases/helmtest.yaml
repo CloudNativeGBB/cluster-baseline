@@ -12,5 +12,5 @@ spec:
   forceUpgrade: false
   chart:
     repository: https://griffith.azurecr.io/helm/v1/repo
-    name: helm/hello-world
+    name: hello-world
     version: v1
