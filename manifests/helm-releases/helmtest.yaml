@@ -11,6 +11,5 @@ spec:
   wait: false
   forceUpgrade: false
   chart:
-    repository: https://griffith.azurecr.io/helm/v1/repo
+    repository: griffith
     name: hello-world
-    version: 0.1.0
