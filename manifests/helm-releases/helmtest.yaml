@@ -13,4 +13,3 @@ spec:
   chart:
     repository: https://griffith.azurecr.io/helm/v1/repo
     name: hello-world
-    version: 0.1.0
