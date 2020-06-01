@@ -2,7 +2,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: dev-limit-range
-  namespace: dev
+  namespace: flighttracker-dev
 spec:
   limits:
   - default:
@@ -28,7 +28,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: staging-limit-range
-  namespace: staging
+  namespace: flighttracker-staging
 spec:
   limits:
   - default:
@@ -54,7 +54,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: production-limit-range
-  namespace: production
+  namespace: flighttracker-production
 spec:
   limits:
   - default:

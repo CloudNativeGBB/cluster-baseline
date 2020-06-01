@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: mem-cpu-dev
-  namespace: dev
+  namespace: flighttracker-dev
 spec:
   hard:
     requests.cpu: "5"
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: mem-cpu-staging
-  namespace: staging
+  namespace: flighttracker-staging
 spec:
   hard:
     requests.cpu: "8"
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: mem-cpu-production
-  namespace: production
+  namespace: flighttracker-production
 spec:
   hard:
     requests.cpu: "16"
