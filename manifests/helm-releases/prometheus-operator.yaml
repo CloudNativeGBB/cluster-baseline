@@ -29,3 +29,5 @@ spec:
       enabled: false
     kubeProxy:
       enabled: false
+    plugins:
+    - grafana-piechart-panel
