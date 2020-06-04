@@ -1,0 +1,24 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: azure-monitor
+  namespace: kube-system
+spec:
+  releaseName: azure-monitor
+  targetNamespace: kube-system
+  timeout: 300
+  resetValues: false
+  wait: false
+  forceUpgrade: false
+  chart:
+    repository: https://kubernetes-charts-incubator.storage.googleapis.com/
+    name: azuremonitor-containers
+    version: 2.7.0
+  values:
+    omsagent:
+      env: 
+        clusterName: 'arcwork'
+  valuesFrom:
+  - secretKeyRef:
+      name: azure-monitor-conn
+      key: azure-monitor-values.yaml
