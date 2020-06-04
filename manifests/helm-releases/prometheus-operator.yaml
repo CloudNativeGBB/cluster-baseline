@@ -14,3 +14,8 @@ spec:
     repository: https://kubernetes-charts.storage.googleapis.com
     name: prometheus-operator
     version: 8.12.3
+  values:
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        https: false
