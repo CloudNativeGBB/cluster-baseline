@@ -17,7 +17,7 @@ spec:
   values:
     omsagent:
       env: 
-        clusterName: 'arcwork'
+        clusterName: 'griffcluster'
   valuesFrom:
   - secretKeyRef:
       name: azure-monitor-conn
