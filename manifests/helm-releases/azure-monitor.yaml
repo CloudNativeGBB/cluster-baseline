@@ -17,7 +17,7 @@ spec:
   values:
     omsagent:
       env: 
-        clusterName: 'griffcluster'
+        clusterName: '/subscriptions/62afe9fc-190b-4f18-95ac-e5426017d4c8/resourceGroups/EphArcWork/providers/Microsoft.Kubernetes/connectedClusters/arc-griffcluster'
   valuesFrom:
   - secretKeyRef:
       name: azure-monitor-conn
