@@ -1,0 +1,174 @@
+name: ArcK8sClusterBaseline
+version: 0.1.0
+description: "Bootstraps a cluster with Azure Arc and Sets Up Sealed Secrets and Monitoring"
+# TODO: update the registry to your own, e.g. myregistry/porter-hello:v0.1.0
+tag: stevegriffith/arc-bootstrap:v0.1.0
+
+dockerfile: Dockerfile.tmpl
+
+mixins:
+  - exec
+  - az:
+      extensions:
+      - connectedk8s
+      - k8sconfiguration
+  - arm
+  - kubernetes
+
+credentials:
+- name: kubeconfig
+  path: /root/.kube/config
+- name: SUBSCRIPTION_ID
+  env: AZURE_SUBSCRIPTION_ID
+- name: CLIENT_ID
+  env: AZURE_CLIENT_ID
+- name: TENANT_ID
+  env: AZURE_TENANT_ID
+- name: CLIENT_SECRET
+  env: AZURE_CLIENT_SECRET
+
+
+parameters:
+- name: arc_resource_group
+  type: string
+
+- name: arc_cluster_name
+  type: string
+
+- name: la_workspace_rg
+  type: string
+
+- name: la_workspace_name
+  type: string
+
+
+install:
+  - exec: 
+      description: "Azure CLI login"
+      command: "az"
+      arguments: 
+        - "login" 
+        - "--service-principal"
+        - "--username" 
+        - "{{ bundle.credentials.CLIENT_ID}}"
+        - "--password" 
+        - "{{ bundle.credentials.CLIENT_SECRET}}"
+        - "--tenant" 
+        - "{{ bundle.credentials.TENANT_ID}}"
+
+  - exec: 
+      description: "Azure Select Subscription"
+      command: "az"
+      arguments: 
+        - "account" 
+        - "set"
+        - "--subscription" 
+        - "{{ bundle.credentials.SUBSCRIPTION_ID}}"
+
+  - az:
+      description: "Description of the command"
+      arguments:
+      - "monitor"
+      - "log-analytics"
+      - "workspace"
+      - "show"
+      - "--resource-group"
+      - "{{ bundle.parameters.la_workspace_rg}}"
+      - "--workspace-name"
+      - "{{ bundle.parameters.la_workspace_name }}"
+      supress-output: false
+      outputs:
+        - name: LA_WORKSPACE_ID
+          jsonPath: id
+        - name: LA_WORKSPACE_REGION
+          jsonPath: location
+
+  - exec: 
+      description: "Deploy Container Insights to Log Analytics Workspace"
+      command: "./bash/DeployContainerInsights.sh"
+      arguments: 
+        - "{{ bundle.outputs.LA_WORKSPACE_ID }}"
+        - "{{ bundle.outputs.LA_WORKSPACE_REGION }}"
+        - "{{ bundle.parameters.la_workspace_rg}}"
+
+        
+  - exec: 
+        description: "Arc Connect the Cluster"
+        command: "az"
+        arguments: 
+          - "connectedk8s" 
+          - "connect"
+          - "--name" 
+          - "{{ bundle.parameters.arc_cluster_name}}"
+          - "--resource-group" 
+          - "{{ bundle.parameters.arc_resource_group}}"
+
+  - exec: 
+      description: "Build Azure Monitor Values File"
+      command: "./bash/CreateAzMonValues.sh"
+      arguments: 
+        - "{{ bundle.parameters.la_workspace_name }}"
+        - "{{ bundle.parameters.la_workspace_rg}}"
+        - "{{ bundle.parameters.arc_cluster_name}}"
+        - "{{ bundle.parameters.arc_resource_group}}"
+        - "{{ bundle.outputs.LA_WORKSPACE_ID }}"
+       
+  - exec: 
+      description: "Apply Cluster Baseline Config"
+      command: "./bash/ApplyClusterBaseline.sh"
+      arguments: 
+        - "{{ bundle.parameters.arc_resource_group}}"
+        - "{{ bundle.parameters.arc_cluster_name}}"
+upgrade:
+#  TODO
+
+uninstall:
+  - exec: 
+      description: "Azure CLI login"
+      command: "az"
+      arguments: 
+        - "login" 
+        - "--service-principal"
+        - "--username" 
+        - "{{ bundle.credentials.CLIENT_ID}}"
+        - "--password" 
+        - "{{ bundle.credentials.CLIENT_SECRET}}"
+        - "--tenant" 
+        - "{{ bundle.credentials.TENANT_ID}}"
+
+  - exec: 
+      description: "Azure Select Subscription"
+      command: "az"
+      arguments: 
+        - "account" 
+        - "set"
+        - "--subscription" 
+        - "{{ bundle.credentials.SUBSCRIPTION_ID}}"
+
+  - exec: 
+      description: "Arc Disconnect the Cluster"
+      command: "az"
+      arguments: 
+        - "connectedk8s" 
+        - "delete"
+        - "--name" 
+        - "{{ bundle.parameters.arc_cluster_name}}"
+        - "--resource-group" 
+        - "{{ bundle.parameters.arc_resource_group}}"
+        - "--yes"
+  
+  - exec:
+      description: "Cleanup Cluster Baseline Configuration"
+      command: "./bash/BaselineCleanup.sh"
+
+  - exec:
+      description: "Delete Azure Monitor Values File Secret"
+      command: "kubectl"
+      arguments:
+        - "delete"
+        - "secret"
+        - "azure-monitor-conn"
+        - "-n"
+        - "kube-system"
+      wait: true
+

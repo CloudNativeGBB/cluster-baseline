@@ -1,0 +1,31 @@
+FROM debian:stretch
+
+ARG BUNDLE_DIR
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get install -y apt-utils ca-certificates wget curl
+
+# Install Azure CLI
+#RUN apt-get update && apt-get install -y apt-utils ca-certificates curl apt-transport-https lsb-release gnupg
+#RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+#RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ stretch main" | tee /etc/apt/sources.list.d/azure-cli.list
+#RUN apt-get update
+#RUN apt-get install azure-cli
+
+# Install KubeSeal
+RUN wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.10.0/kubeseal-linux-amd64 -O kubeseal
+RUN install -m 755 kubeseal /usr/local/bin/kubeseal
+
+# Install Helm 3
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+RUN chmod 700 get_helm.sh
+RUN ./get_helm.sh
+
+#RUN curl https://helm.baltorepo.com/organization/signing.asc | apt-key add -
+#RUN echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+#RUN apt-get update
+#RUN apt-get install helm
+
+# Use the BUNDLE_DIR build argument to copy files into the bundle
+COPY . $BUNDLE_DIR
