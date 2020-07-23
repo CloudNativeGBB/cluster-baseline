@@ -14,10 +14,6 @@ spec:
     repository: https://kubernetes-charts-incubator.storage.googleapis.com/
     name: azuremonitor-containers
     version: 2.7.0
-  values:
-    omsagent:
-      env: 
-        clusterName: '/subscriptions/62afe9fc-190b-4f18-95ac-e5426017d4c8/resourceGroups/EphArcWork/providers/Microsoft.Kubernetes/connectedClusters/arc-griffcluster'
   valuesFrom:
   - secretKeyRef:
       name: azure-monitor-conn
