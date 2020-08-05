@@ -72,10 +72,9 @@ install:
       - "log-analytics"
       - "workspace"
       - "show"
-      - "--resource-group"
-      - "{{ bundle.parameters.la_workspace_rg}}"
-      - "--workspace-name"
-      - "{{ bundle.parameters.la_workspace_name }}"
+      flags:
+      resource-group: "{{ bundle.parameters.la_workspace_rg}}"
+      workspace-name: "{{ bundle.parameters.la_workspace_name }}"
       supress-output: false
       outputs:
         - name: LA_WORKSPACE_ID
@@ -98,10 +97,9 @@ install:
         arguments: 
           - "connectedk8s" 
           - "connect"
-          - "--name" 
-          - "{{ bundle.parameters.arc_cluster_name}}"
-          - "--resource-group" 
-          - "{{ bundle.parameters.arc_resource_group}}"
+        flags:
+          name: "{{ bundle.parameters.arc_cluster_name}}"
+          resource-group: "{{ bundle.parameters.arc_resource_group}}"
 
   - exec: 
       description: "Build Azure Monitor Values File"
@@ -142,8 +140,8 @@ uninstall:
       arguments: 
         - "account" 
         - "set"
-        - "--subscription" 
-        - "{{ bundle.credentials.SUBSCRIPTION_ID}}"
+      flags:
+        subscription: "{{ bundle.credentials.SUBSCRIPTION_ID}}"
 
   - exec: 
       description: "Arc Disconnect the Cluster"
@@ -151,11 +149,10 @@ uninstall:
       arguments: 
         - "connectedk8s" 
         - "delete"
-        - "--name" 
-        - "{{ bundle.parameters.arc_cluster_name}}"
-        - "--resource-group" 
-        - "{{ bundle.parameters.arc_resource_group}}"
-        - "--yes"
+      flags:
+        name: "{{ bundle.parameters.arc_cluster_name}}"
+        resource-group: "{{ bundle.parameters.arc_resource_group}}"
+        yes: ""
   
   - exec:
       description: "Cleanup Cluster Baseline Configuration"
