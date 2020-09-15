@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "aks" {
-  name                = "AksDemoVnet"
+  name                = "AksDemoVnet${local.suffix}"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
   address_space       = ["10.0.0.0/16"]
