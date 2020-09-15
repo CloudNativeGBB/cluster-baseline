@@ -3,10 +3,6 @@ terraform {
 }
 
 ######################################################################### PROVIDERS
-provider "azuread" {
-  tenant_id = var.tenant_id
-}
-
 provider "azurerm" {
   version = "~> 2.25.0"
   features {}
