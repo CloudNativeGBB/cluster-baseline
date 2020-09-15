@@ -50,6 +50,10 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     vnet_subnet_id      = var.vnet_subnet_id
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   network_profile {
     network_plugin     = var.network_plugin
     network_policy     = var.network_policy
