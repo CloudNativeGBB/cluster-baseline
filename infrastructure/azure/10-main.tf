@@ -15,5 +15,6 @@ resource "random_string" "suffix" {
 
 locals {
   environment = terraform.workspace
+  location    = var.region
   suffix      = random_string.suffix.result
 }

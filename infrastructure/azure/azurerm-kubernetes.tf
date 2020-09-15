@@ -1,4 +1,4 @@
-resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
+resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.prefix}-aks-cluster-${local.suffix}"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
@@ -8,8 +8,8 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   default_node_pool {
     name                = "default"
     enable_auto_scaling = true
-    min_count           = 2
-    max_count           = 10
+    min_count           = var.default_np_count
+    max_count           = 5
     vm_size             = var.default_np_sku_size
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
@@ -43,4 +43,16 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     enabled = true
   }
 
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "primary" {
+  name                  = "usernp1"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  vm_size               = var.user_np_sku_size
+  node_count            = var.user_np_count
+  mode                  = "User"
+
+  tags = {
+    environment = local.environment
+  }
 }

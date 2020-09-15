@@ -15,6 +15,21 @@ variable "default_np_sku_size" {
   type = string
 }
 
+variable "default_np_count" {
+  default = 2
+  type = number
+}
+
+variable "user_np_sku_size" {
+  default = "Standard_DS4_v2"
+  type = string
+}
+
+variable "user_np_count" {
+  default = 3
+  type = number
+}
+
 variable "network_plugin" {
   default = "azure"
   type = string
