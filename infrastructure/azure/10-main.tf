@@ -8,7 +8,8 @@ provider "azuread" {
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
+  version = "~> 2.25.0"
+  features {}
 }
 
 ######################################################################### RESOURCES
@@ -42,7 +43,7 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     name                = "default"
     min_count           = 3
     max_count           = 10
-    vm_size             = "Standard_DS1_v2"
+    vm_size             = var.sku_size
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
     availability_zones  = [ "1", "2", "3"]
