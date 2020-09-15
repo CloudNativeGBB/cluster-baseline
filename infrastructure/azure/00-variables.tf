@@ -1,8 +1,4 @@
 ### RESOURCE PROVISIONING
-variable "tenant_id" {
-  type = string
-}
-
 variable "prefix" {
   type = string
 }
@@ -16,7 +12,7 @@ variable "kubernetes_version" {
 }
 
 variable "default_np_sku_size" {
-  type = "string"
+  type = string
 }
 
 variable "network_plugin" {
