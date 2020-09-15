@@ -7,8 +7,13 @@ provider "azurerm" {
   features {}
 }
 
-resource "random_string" "random_string_log_analytics_workspace_name_suffix" {
+resource "random_string" "suffix" {
   length = 4
   special = false
   upper = false
+}
+
+locals {
+  environment = terraform.workspace
+  suffix      = random_string.suffix.result
 }
