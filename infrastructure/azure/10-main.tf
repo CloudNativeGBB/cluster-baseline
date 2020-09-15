@@ -50,11 +50,6 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     vnet_subnet_id      = var.vnet_subnet_id
   }
 
-  service_principal {
-    client_id     = var.service_principal_client_id
-    client_secret = var.service_principal_client_secret
-  }
-
   network_profile {
     network_plugin     = var.network_plugin
     network_policy     = var.network_policy
