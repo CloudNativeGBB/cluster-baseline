@@ -15,6 +15,10 @@ variable "kubernetes_version" {
   type = string
 }
 
+variable "default_np_sku_size" {
+  type = "string"
+}
+
 variable "network_plugin" {
   default = "azure"
   type = string

@@ -1,7 +1,7 @@
 prefix="cngbb"
 region="eastus"
 kubernetes_version="1.17.0"
-sku_size="Standard_DS1_v2"
+default_np_sku_size="Standard_DS1_v2"
 network_plugin="azure"
 network_policy="calico"
 load_balancer_sku="Standard"
