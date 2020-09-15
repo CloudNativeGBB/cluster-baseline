@@ -46,7 +46,6 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     vm_size             = var.sku_size
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
-    availability_zones  = [ "1", "2", "3"]
     enable_auto_scaling = true
     vnet_subnet_id      = azurerm_subnet.aks.id
   }
