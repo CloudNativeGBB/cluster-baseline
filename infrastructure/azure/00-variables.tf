@@ -30,11 +30,6 @@ variable "load_balancer_sku" {
   type = string
 }
 
-variable "vnet_subnet_id" {
-  default = null
-  type = string
-}
-
 variable "service_cidr" {
   default = null
   type = string
