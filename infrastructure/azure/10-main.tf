@@ -1,3 +1,7 @@
+terraform {
+  required_version = "~> 0.12.29"
+}
+
 ######################################################################### PROVIDERS
 provider "azuread" {
   tenant_id = var.tenant_id
