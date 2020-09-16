@@ -1,5 +1,5 @@
 module "aks" {
-    source = ""
+    source = "../modules/aks"
 
     prefix = local.prefix
     suffix = local.suffix
