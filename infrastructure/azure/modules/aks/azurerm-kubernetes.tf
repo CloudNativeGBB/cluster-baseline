@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vm_size             = var.default_np_sku_size
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
-    vnet_subnet_id      = azurerm_subnet.aks.id
+    vnet_subnet_id      = var.subnet_id
   }
 
   identity {
@@ -30,6 +30,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidr       = var.service_cidr
     dns_service_ip     = var.dns_service_ip
     docker_bridge_cidr = var.docker_bridge_cidr
+    outbound_type      = var.private_cluster_enabled == true ? "userDefinedRouting" : "loadBalancer"
   }
 
   addon_profile {
