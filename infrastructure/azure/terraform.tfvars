@@ -1,6 +1,7 @@
 prefix="cngbb"
 region="eastus"
 kubernetes_version="1.17.9"
+private_cluster_enabled=false
 default_np_sku_size="Standard_DS2_v2"
 default_np_count=2
 user_np_sku_size="Standard_DS4_v2"

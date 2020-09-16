@@ -11,6 +11,11 @@ variable "kubernetes_version" {
   type = string
 }
 
+variable "private_cluster_enabled" {
+  default = false
+  type = bool
+}
+
 variable "default_np_sku_size" {
   type = string
 }
