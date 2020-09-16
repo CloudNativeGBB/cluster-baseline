@@ -7,6 +7,13 @@ provider "azurerm" {
   features {}
 }
 
+
+resource "random_string" "prefix" {
+  length = 4
+  special = false
+  upper = false
+}
+
 resource "random_string" "suffix" {
   length = 4
   special = false
@@ -14,6 +21,8 @@ resource "random_string" "suffix" {
 }
 
 locals {
-  environment = terraform.workspace
+  prefix      = var.prefix != "" ? var.prefix : random_string.prefix.result
   suffix      = var.suffix != "" ? var.suffix : random_string.suffix.result
+  location    = var.location
+  environment = terraform.workspace
 }

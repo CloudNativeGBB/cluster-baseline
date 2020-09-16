@@ -1,5 +1,6 @@
 ### RESOURCE PROVISIONING
 variable "prefix" {
+  default = ""
   type = string
 }
 
@@ -8,8 +9,8 @@ variable "suffix" {
   type = string
 }
 
-variable "resource_group" {
-  type = map
+variable "location" {
+  type = string
 }
 
 variable "kubernetes_version" {
@@ -38,10 +39,6 @@ variable "user_np_sku_size" {
 variable "user_np_count" {
   default = 3
   type = number
-}
-
-variable "subnet_id" {
-  type = string
 }
 
 variable "network_plugin" {

@@ -1,8 +1,10 @@
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.prefix}-aks-cluster-${local.suffix}"
-  location            = azurerm_resource_group.aks.location
-  resource_group_name = azurerm_resource_group.aks.name
+  location            = var.resource_group.location
+  resource_group_name = var.resource_group.name
+  
   dns_prefix          = "${var.prefix}-aks-cluster-${local.suffix}"
+  
   kubernetes_version  = var.kubernetes_version
   private_cluster_enabled = var.private_cluster_enabled
 
