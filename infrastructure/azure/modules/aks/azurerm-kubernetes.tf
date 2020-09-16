@@ -36,7 +36,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   addon_profile {
     oms_agent {
       enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+      log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
     }
     kube_dashboard {
       enabled = false
@@ -45,6 +45,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   
   role_based_access_control {
     enabled = true
+
+    azure_active_directory {
+      managed = true
+    }    
   }
 
 }

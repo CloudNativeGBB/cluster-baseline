@@ -2,6 +2,7 @@ resource "azurerm_route_table" "aks" {
   name                          = "aksRouteTable"
   location                      = azurerm_resource_group.aks.location
   resource_group_name           = azurerm_resource_group.aks.name
+  disable_bgp_route_propagation = false
 
   tags = {
     environment = local.environment

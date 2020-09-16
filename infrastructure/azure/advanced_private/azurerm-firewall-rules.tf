@@ -28,6 +28,32 @@ resource azurerm_firewall_application_rule_collection "aks" {
   }
 }
 
+resource azurerm_firewall_application_rule_collection "azureMonitor" {
+  name                = "azureMonitorRequiredRules"
+  azure_firewall_name = azurerm_firewall.aks.name
+  resource_group_name = azurerm_resource_group.aks.name
+  priority            = 110
+  action              = "Allow"
+
+  rule {
+    name = "azureMonitorRules"
+
+    source_addresses = concat([],azurerm_virtual_network.aks.address_space)
+
+    target_fqdns = [
+      "dc.services.visualstudio.com",
+      "*.ods.opinsights.azure.com",
+      "*.oms.opinsights.azure.com",
+      "*.monitoring.azure.com"
+    ]
+
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+}
+
 resource "azurerm_firewall_network_rule_collection" "ntp" {
   name                = "testcollection"
   azure_firewall_name = azurerm_firewall.aks.name

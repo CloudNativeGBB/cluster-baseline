@@ -10,6 +10,7 @@ provider "azurerm" {
 
 resource "random_string" "prefix" {
   length = 4
+  number = false
   special = false
   upper = false
 }
