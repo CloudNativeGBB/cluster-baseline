@@ -59,6 +59,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "primary" {
   vm_size               = var.user_np_sku_size
   node_count            = var.user_np_count
   mode                  = "User"
+  vnet_subnet_id        = var.subnet_id
 
   tags = {
     environment = local.environment

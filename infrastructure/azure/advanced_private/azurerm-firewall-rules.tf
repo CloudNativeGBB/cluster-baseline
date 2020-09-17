@@ -1,5 +1,5 @@
 resource azurerm_firewall_application_rule_collection "aks" {
-  name                = "aksRequiredRules"
+  name                = "aksRequiredRules${local.suffix}"
   azure_firewall_name = azurerm_firewall.aks.name
   resource_group_name = azurerm_resource_group.aks.name
   priority            = 100
@@ -29,7 +29,7 @@ resource azurerm_firewall_application_rule_collection "aks" {
 }
 
 resource azurerm_firewall_application_rule_collection "azureMonitor" {
-  name                = "azureMonitorRequiredRules"
+  name                = "azureMonitorRequiredRules${local.suffix}"
   azure_firewall_name = azurerm_firewall.aks.name
   resource_group_name = azurerm_resource_group.aks.name
   priority            = 110
@@ -55,7 +55,7 @@ resource azurerm_firewall_application_rule_collection "azureMonitor" {
 }
 
 resource "azurerm_firewall_network_rule_collection" "ntp" {
-  name                = "testcollection"
+  name                = "ntpRule${local.suffix}"
   azure_firewall_name = azurerm_firewall.aks.name
   resource_group_name = azurerm_resource_group.aks.name
   priority            = 200
@@ -81,7 +81,7 @@ resource "azurerm_firewall_network_rule_collection" "ntp" {
 }
 
 resource azurerm_firewall_application_rule_collection "updates" {
-  name                = "ubuntuUpdateInfrastructure"
+  name                = "ubuntuUpdateInfrastructure${local.suffix}"
   azure_firewall_name = azurerm_firewall.aks.name
   resource_group_name = azurerm_resource_group.aks.name
   priority            = 300

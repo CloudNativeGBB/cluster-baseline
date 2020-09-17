@@ -8,7 +8,7 @@ resource azurerm_public_ip firewall {
 }
 
 resource azurerm_firewall aks {
-  name                = "afw-${local.suffix}"
+  name                = "azfw-${local.suffix}"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
 
