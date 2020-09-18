@@ -3,7 +3,6 @@ resource "azurerm_private_dns_zone" "acr" {
   resource_group_name = azurerm_resource_group.aks.name
 }
 
-
 resource "azurerm_private_dns_zone_virtual_network_link" "acr" {
   name                  = "acrprivdnslink"
   resource_group_name   = azurerm_resource_group.aks.name
@@ -28,22 +27,4 @@ resource "azurerm_private_endpoint" "acr" {
     is_manual_connection           = false
     subresource_names              = ["registry"]
   }
-}
-
-
-resource "azurerm_private_dns_a_record" "acr-endpoint" {
-  name                = azurerm_container_registry.acr.name
-  zone_name           = azurerm_private_dns_zone.acr.name
-  resource_group_name = azurerm_resource_group.aks.name
-  ttl                 = 300
-  records             = [azurerm_private_endpoint.acr.private_service_connection[0].private_ip_address]
-}
-
-
-resource "azurerm_private_dns_a_record" "acr-data" {
-  name                = "${azurerm_container_registry.acr.name}.${azurerm_resource_group.aks.location}.data"
-  zone_name           = azurerm_private_dns_zone.acr.name
-  resource_group_name = azurerm_resource_group.aks.name
-  ttl                 = 300
-  records             = [azurerm_private_endpoint.acr.private_service_connection[0].private_ip_address]
 }

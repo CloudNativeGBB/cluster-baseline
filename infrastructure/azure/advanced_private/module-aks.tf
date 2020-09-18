@@ -10,7 +10,7 @@ module "aks" {
     }
     
     kubernetes_version = var.kubernetes_version
-    private_cluster_enabled = true
+    private_cluster_enabled = var.private_cluster_enabled
     
     default_np_sku_size = var.default_np_sku_size
     default_np_count = var.default_np_count
