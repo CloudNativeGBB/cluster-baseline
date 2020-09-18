@@ -1,16 +1,13 @@
 module "aks" {
-    source = "../modules/aks"
+    source = "../../modules/aks"
 
     prefix = local.prefix
     suffix = local.suffix
 
-    resource_group = {
-        name     = azurerm_resource_group.aks.name
-        location = azurerm_resource_group.aks.location
-    }
+    resource_group = data.terraform_remote_state.networking.outputs.resource_group
     
     kubernetes_version = var.kubernetes_version
-    private_cluster_enabled = var.private_cluster_enabled
+    private_cluster_enabled = true
     
     default_np_sku_size = var.default_np_sku_size
     default_np_count = var.default_np_count
@@ -18,7 +15,7 @@ module "aks" {
     user_np_sku_size = var.user_np_sku_size
     user_np_count = var.user_np_count
 
-    subnet_id       = azurerm_subnet.aks.id
+    subnet_id       = data.terraform_remote_state.networking.outputs.aks_subnet_id
     network_plugin = var.network_plugin
     network_policy = var.network_policy
     load_balancer_sku = var.load_balancer_sku

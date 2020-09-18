@@ -8,8 +8,7 @@ variable "suffix" {
   type = string
 }
 
-variable "resource_group" {
-  type = map
+variable "resource_group" {  
 }
 
 variable "kubernetes_version" {

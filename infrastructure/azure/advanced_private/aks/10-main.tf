@@ -1,5 +1,9 @@
 terraform {
   required_version = "~> 0.13.3"
+
+  backend "local" {
+    path = "./private-aks.tfstate"
+  }
 }
 
 provider "azurerm" {
@@ -7,6 +11,13 @@ provider "azurerm" {
   features {}
 }
 
+data "terraform_remote_state" "networking" {
+  backend = "local"
+
+  config = {
+    path = "${path.module}/../networking/networking.tfstate"
+  }
+}
 
 resource "random_string" "prefix" {
   length = 4
