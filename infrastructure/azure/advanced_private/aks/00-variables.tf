@@ -9,10 +9,6 @@ variable "suffix" {
   type = string
 }
 
-variable "location" {
-  type = string
-}
-
 variable "kubernetes_version" {
   type = string
 }
