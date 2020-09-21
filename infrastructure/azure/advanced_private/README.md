@@ -1,17 +1,26 @@
 # AKS Private Cluster with Advanced Networking
 
-This will provision an AKS cluster with:
+This will provision a "Private" AKS cluster with:
 - [Private Cluster](https://docs.microsoft.com/en-us/azure/aks/private-clusters)
 - [Outbound Type: UDR](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype)
-- [Restricted Egress Traffic with Azure Firewall](https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic)
+- [Restricted Egress Traffic with Azure Firewall and UDRs](https://docs.microsoft.com/en-us/azure/aks/limit-egress-traffic)
+- [Private Azure Container Registry via Private Link](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-private-link)
 
 
 ```bash
-terraform init networking
-terraform plan -out networking/tfplan
-terraform apply networking/tfplan -auto-approve
+# From <repo_root>/infrastructure/azure/advanced_private/
+# Login to Azure-CLI
+# az login
 
-terraform init aks/
-terraform plan -out aks/tfplan
-terraform apply aks/tfplan -auto-approve
+bash provision.sh
+```
+
+## Destroy/Cleaning Up
+
+```bash
+# From <repo_root>/infrastructure/azure/advanced_private/
+# Login to Azure-CLI
+# az login
+
+bash destroy.sh
 ```
