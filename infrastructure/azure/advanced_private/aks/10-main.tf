@@ -2,7 +2,7 @@ terraform {
   required_version = "~> 0.13.3"
 
   backend "local" {
-    path = "./private-aks.tfstate"
+    path = "./aks-private.tfstate"
   }
 }
 
@@ -35,6 +35,6 @@ resource "random_string" "suffix" {
 locals {
   prefix      = var.prefix != "" ? var.prefix : random_string.prefix.result
   suffix      = var.suffix != "" ? var.suffix : random_string.suffix.result
-  location    = var.location
+  location    = data.terraform_remote_state.networking.outputs.resource_group.location
   environment = terraform.workspace
 }
