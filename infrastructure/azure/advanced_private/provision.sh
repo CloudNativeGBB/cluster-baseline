@@ -10,7 +10,7 @@ echo "Deploy Networking"
 cd $NETWORKING_DIR
 terraform init
 terraform plan -out tfplan
-terraform apply tfplan -auto-approve
+terraform apply -auto-approve tfplan 
 
 echo "Networking deployed"
 
@@ -21,6 +21,6 @@ echo "Deploy AKS into networking"
 cd $AKS_DIR
 terraform init
 terraform plan -out tfplan
-terraform apply tfplan -auto-approve
+terraform apply -auto-approve tfplan 
 
 echo "AKS deployed"
