@@ -14,6 +14,7 @@ variable "location" {
 }
 
 variable "kubernetes_version" {
+  default = ""
   type = string
 }
 
