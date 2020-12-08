@@ -5,7 +5,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   
   dns_prefix          = "${var.prefix}-aks-cluster-${local.suffix}"
   
-  kubernetes_version  = var.kubernetes_version
+  kubernetes_version  = var.kubernetes_version != "" ? var.kubernetes_version : null
   private_cluster_enabled = var.private_cluster_enabled
 
   default_node_pool {

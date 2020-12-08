@@ -12,6 +12,7 @@ variable "resource_group" {
 }
 
 variable "kubernetes_version" {
+  default = ""
   type = string
 }
 

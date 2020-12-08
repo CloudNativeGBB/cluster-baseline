@@ -1,7 +1,6 @@
 prefix = "cngbb"
 suffix = ""
 location = "eastus"
-kubernetes_version = "1.19.3"
 default_np_sku_size = "Standard_DS2_v2"
 default_np_count = 2
 user_np_sku_size = "Standard_DS4_v2"
