@@ -15,5 +15,6 @@ resource "random_string" "suffix" {
 
 locals {
   environment = terraform.workspace
+  prefix      = var.prefix
   suffix      = var.suffix != "" ? var.suffix : random_string.suffix.result
 }

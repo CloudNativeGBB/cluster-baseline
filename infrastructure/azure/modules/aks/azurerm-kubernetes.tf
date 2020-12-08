@@ -1,9 +1,9 @@
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.prefix}-aks-cluster-${local.suffix}"
+  name                = "${local.prefix}-aks-cluster-${local.suffix}"
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
   
-  dns_prefix          = "${var.prefix}-aks-cluster-${local.suffix}"
+  dns_prefix          = "${local.prefix}-aks-cluster-${local.suffix}"
   
   kubernetes_version  = var.kubernetes_version != "" ? var.kubernetes_version : null
   private_cluster_enabled = var.private_cluster_enabled
