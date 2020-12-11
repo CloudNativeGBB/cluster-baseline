@@ -66,3 +66,8 @@ variable "docker_bridge_cidr" {
   default = null
   type = string
 }
+
+variable "os_disk_size_gb" {
+  default = "30"
+  type = string
+}

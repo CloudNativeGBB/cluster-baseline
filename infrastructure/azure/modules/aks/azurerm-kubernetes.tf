@@ -14,7 +14,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     min_count           = var.default_np_count
     max_count           = 5
     vm_size             = var.default_np_sku_size
-    os_disk_size_gb     = 30
+    os_disk_type          = "Ephemeral"
+    os_disk_size_gb     = var.os_disk_size_gb
     type                = "VirtualMachineScaleSets"
     vnet_subnet_id      = var.subnet_id
   }
@@ -43,25 +44,26 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
   
-  role_based_access_control {
-    enabled = true
+  # role_based_access_control {
+  #   enabled = true
 
-    azure_active_directory {
-      managed = true
-    }    
-  }
+  #   azure_active_directory {
+  #     managed = true
+  #   }    
+  # }
 
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "primary" {
-  name                  = "usernp1"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = var.user_np_sku_size
-  node_count            = var.user_np_count
-  mode                  = "User"
-  vnet_subnet_id        = var.subnet_id
-
-  tags = {
-    environment = local.environment
-  }
-}
+# resource "azurerm_kubernetes_cluster_node_pool" "primary" {
+#   name                  = "usernp1"
+#   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+#   vm_size               = var.user_np_sku_size
+#   node_count            = var.user_np_count
+#   mode                  = "User"
+#   vnet_subnet_id        = var.subnet_id
+#   os_disk_type          = "Managed"
+#   os_disk_size_gb       = var.os_disk_size_gb
+#   tags = {
+#     environment = local.environment
+#   }
+# }

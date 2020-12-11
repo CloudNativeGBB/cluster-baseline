@@ -25,4 +25,6 @@ module "aks" {
     service_cidr = var.service_cidr
     dns_service_ip = var.dns_service_ip
     docker_bridge_cidr = var.docker_bridge_cidr
+
+    os_disk_size_gb = var.os_disk_size_gb
 }
