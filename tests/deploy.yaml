@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fileshare-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10000Gi
+  storageClassName: fileshare
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scripts
+data:
+  writer.sh: |
+    #!/bin/sh
+    echo "Writing data file for benchmark"
+    dd if=/dev/urandom of=/mount/data.bin bs=1024 count=26214400
+    echo "Done"
+    touch /mount/writing_done
+  reader.sh: |
+    #!/bin/sh
+    echo hello!
+
+    while [ ! -f /mount/writing_done ];
+    do
+        echo "waiting"
+        sleep 10
+    done
+
+    echo "Starting read benchmark"
+    time sha256sum /mount/data.bin
+    echo "Done"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: writer-job
+  labels:
+    storage-benchmark: fileshare
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1500
+      restartPolicy: OnFailure
+      containers:
+      - name: writer
+        image: busybox:latest
+        command: ["/scripts/writer.sh"]
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 1
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - mountPath: /mount
+          name: fileshare        
+        - mountPath: /scripts
+          name: scripts    
+      volumes:
+      - name: fileshare
+        persistentVolumeClaim:
+          claimName: fileshare-claim
+      - name: scripts
+        configMap:
+          name: scripts
+          defaultMode: 0777
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: reader-job
+  labels:
+    storage-benchmark: fileshare
+spec:
+  template:
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: storage-benchmark
+                operator: In
+                values:
+                - fileshare
+            topologyKey: "kubernetes.io/hostname"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1500
+      restartPolicy: OnFailure
+      containers:
+      - name: writer
+        image: busybox:latest
+        command: ["/scripts/reader.sh"]
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 1
+          limits:
+            memory: 1Gi
+            cpu: 1
+        volumeMounts:
+        - mountPath: /mount
+          name: fileshare    
+        - mountPath: /scripts
+          name: scripts    
+      volumes:
+      - name: fileshare
+        persistentVolumeClaim:
+          claimName: fileshare-claim
+      - name: scripts
+        configMap:
+          name: scripts
+          defaultMode: 0777
+
+
