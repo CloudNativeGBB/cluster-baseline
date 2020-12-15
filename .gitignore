@@ -13,3 +13,4 @@ tfplan
 
 # Secrets
 export_secrets.sh
+temp/
