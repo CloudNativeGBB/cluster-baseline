@@ -29,35 +29,7 @@ nodepools = {
 		os_disk_type = "Ephemeral" 
 		os_disk_size_gb = 256
 		node_taints = []
-		node_count = 1
-		enable_auto_scaling = {
-			enabled = true
-			min_count = 1
-			max_count = 5
-		}
-	},
-	nodepool2 = {
-		np_sku_size = "standard_f8s_v2"
-		mode = "User"
-		os_disk_type = "Ephemeral" 
-		os_disk_size_gb = 128
-		node_taints = []
-		node_count = 1
-		enable_auto_scaling = {
-			enabled = true
-			min_count = 1
-			max_count = 5
-		}
-	},
-	systempool02 = {
-		np_sku_size = "Standard_D8s_v3"
-		mode = "System"
-		os_disk_type = "Ephemeral" 
-		os_disk_size_gb = 30
-		node_taints = [
-			"CriticalAddonsOnly=true:NoSchedule"
-		]	
-		node_count = 1
+		node_count = 2
 		enable_auto_scaling = {
 			enabled = true
 			min_count = 1
