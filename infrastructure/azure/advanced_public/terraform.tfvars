@@ -28,7 +28,8 @@ nodepools = {
 		mode = "User"
 		os_disk_type = "Ephemeral" 
 		os_disk_size_gb = 256
-		node_count = 2
+		node_taints = []
+		node_count = 1
 		enable_auto_scaling = {
 			enabled = true
 			min_count = 1
@@ -40,6 +41,7 @@ nodepools = {
 		mode = "User"
 		os_disk_type = "Ephemeral" 
 		os_disk_size_gb = 128
+		node_taints = []
 		node_count = 1
 		enable_auto_scaling = {
 			enabled = true
@@ -47,11 +49,14 @@ nodepools = {
 			max_count = 5
 		}
 	},
-	nodepool3 = {
-		np_sku_size = "standard_d4s_v3"
-		mode = "User"
+	systempool02 = {
+		np_sku_size = "Standard_D8s_v3"
+		mode = "System"
 		os_disk_type = "Ephemeral" 
 		os_disk_size_gb = 30
+		node_taints = [
+			"CriticalAddonsOnly=true:NoSchedule"
+		]	
 		node_count = 1
 		enable_auto_scaling = {
 			enabled = true

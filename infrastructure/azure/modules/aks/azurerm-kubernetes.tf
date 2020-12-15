@@ -66,6 +66,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "primary" {
   vm_size               = each.value.np_sku_size
   os_disk_type          = each.value.os_disk_type
   os_disk_size_gb       = each.value.os_disk_size_gb
+  node_taints           = each.value.node_taints
   node_count            = each.value.node_count
   enable_auto_scaling   = each.value.enable_auto_scaling.enabled != true ? null : true
   min_count             = each.value.enable_auto_scaling.enabled != true ? null : each.value.enable_auto_scaling.min_count

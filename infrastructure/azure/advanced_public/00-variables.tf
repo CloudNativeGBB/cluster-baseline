@@ -67,18 +67,4 @@ variable "default_nodepool" {
         max_count = number
       })
   })
-
-  default = {
-    name = "default"
-    vm_size = "standard_d4s_v3"
-    os_disk_size_gb = 30
-    os_disk_type = "Managed"
-    max_pods = 30
-    node_count = 2
-    enable_auto_scaling = {
-      enabled = false
-      min_count = 1
-      max_count = 5
-    }
-  }
 }
