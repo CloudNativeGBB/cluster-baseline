@@ -12,13 +12,14 @@ module "aks" {
     kubernetes_version = var.kubernetes_version
     private_cluster_enabled = false
     
-    default_np_sku_size = var.default_np_sku_size
-    default_np_count = var.default_np_count
+    # default_np_sku_size = var.default_np_sku_size
+    # default_np_count = var.default_np_count
     
-    user_np_sku_size = var.user_np_sku_size
-    user_np_count = var.user_np_count
+    # user_np_sku_size = var.user_np_sku_size
+    # user_np_count = var.user_np_count
 
     subnet_id       = azurerm_subnet.aks.id
+
     network_plugin = var.network_plugin
     network_policy = var.network_policy
     load_balancer_sku = var.load_balancer_sku
@@ -26,5 +27,7 @@ module "aks" {
     dns_service_ip = var.dns_service_ip
     docker_bridge_cidr = var.docker_bridge_cidr
 
-    os_disk_size_gb = var.os_disk_size_gb
+    # os_disk_size_gb = var.os_disk_size_gb
+    default_nodepool = var.default_nodepool
+    nodepools = var.nodepools
 }

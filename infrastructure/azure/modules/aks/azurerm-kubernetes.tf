@@ -9,14 +9,16 @@ resource "azurerm_kubernetes_cluster" "aks" {
   private_cluster_enabled = var.private_cluster_enabled
 
   default_node_pool {
-    name                = "default"
-    enable_auto_scaling = true
-    min_count           = var.default_np_count
-    max_count           = 5
-    vm_size             = var.default_np_sku_size
-    os_disk_type          = "Ephemeral"
-    os_disk_size_gb     = var.os_disk_size_gb
-    type                = "VirtualMachineScaleSets"
+    name                = var.default_nodepool.name
+    vm_size             = var.default_nodepool.vm_size
+    os_disk_size_gb     = var.default_nodepool.os_disk_size_gb
+    os_disk_type        = var.default_nodepool.os_disk_type
+    max_pods            = var.default_nodepool.max_pods    
+    node_count          = var.default_nodepool.node_count
+    
+    enable_auto_scaling = var.default_nodepool.enable_auto_scaling.enabled != true ? null : true
+    min_count           = var.default_nodepool.enable_auto_scaling.enabled != true ? null : var.default_nodepool.enable_auto_scaling.min_count
+    max_count           = var.default_nodepool.enable_auto_scaling.enabled != true ? null : var.default_nodepool.enable_auto_scaling.max_count
     vnet_subnet_id      = var.subnet_id
   }
 
@@ -54,16 +56,23 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 }
 
-# resource "azurerm_kubernetes_cluster_node_pool" "primary" {
-#   name                  = "usernp1"
-#   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-#   vm_size               = var.user_np_sku_size
-#   node_count            = var.user_np_count
-#   mode                  = "User"
-#   vnet_subnet_id        = var.subnet_id
-#   os_disk_type          = "Managed"
-#   os_disk_size_gb       = var.os_disk_size_gb
-#   tags = {
-#     environment = local.environment
-#   }
-# }
+resource "azurerm_kubernetes_cluster_node_pool" "primary" {
+  for_each = var.nodepools
+  
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  
+  name                  = each.key
+  mode                  = each.value.mode != "" ? each.value.mode : null
+  vm_size               = each.value.np_sku_size
+  os_disk_type          = each.value.os_disk_type
+  os_disk_size_gb       = each.value.os_disk_size_gb
+  node_count            = each.value.node_count
+  enable_auto_scaling   = each.value.enable_auto_scaling.enabled != true ? null : true
+  min_count             = each.value.enable_auto_scaling.enabled != true ? null : each.value.enable_auto_scaling.min_count
+  max_count             = each.value.enable_auto_scaling.enabled != true ? null : each.value.enable_auto_scaling.max_count
+  vnet_subnet_id        = var.subnet_id
+  
+  tags = {
+    environment = local.environment
+  }
+}
