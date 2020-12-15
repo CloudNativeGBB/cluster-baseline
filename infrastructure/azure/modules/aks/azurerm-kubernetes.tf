@@ -47,10 +47,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
   
   # role_based_access_control {
-  #   enabled = true
+  #   enabled = var.role_based_access_control !="" ? true : null
 
   #   azure_active_directory {
-  #     managed = true
+  #     managed = var.azure_active_directory !="" ? true : null
   #   }    
   # }
 

@@ -55,6 +55,16 @@ variable "docker_bridge_cidr" {
   type = string
 }
 
+variable role_based_access_control {
+  type = bool
+  default = null
+}
+
+variable azure_active_directory {
+  type = bool
+  default = null
+}
+
 variable "nodepools" {
   type = map
   default = {}
